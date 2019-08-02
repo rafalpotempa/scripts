@@ -28,6 +28,8 @@ echo "Deploying Kyma...\n"
 
 kubectl apply -f https://github.com/kyma-project/kyma/releases/download/$KYMA_VERSION/kyma-installer-cluster.yaml
 
+sleep 1;
+
 # Watch installation
 while [ `kubectl -n default get installation/kyma-installation -o jsonpath={.status.state}` '!=' "Installed" ] ; \
 do \
