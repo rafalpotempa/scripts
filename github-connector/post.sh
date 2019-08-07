@@ -1,3 +1,5 @@
+set -o errexit
+
 curl \
 -X POST https://githubconnector.34.77.213.54.xip.io/webhook -k \
 -H "content-type: application/json" \
