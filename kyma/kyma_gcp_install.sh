@@ -28,7 +28,7 @@ echo "Deploying Kyma...\n"
 
 kubectl apply -f https://github.com/kyma-project/kyma/releases/download/$KYMA_VERSION/kyma-installer-cluster.yaml
 
-sleep 40;
+sleep 60;
 
 # Watch installation
 COMPONENT=""
