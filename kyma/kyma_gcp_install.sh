@@ -31,15 +31,15 @@ kubectl apply -f https://github.com/kyma-project/kyma/releases/download/$KYMA_VE
 sleep 40;
 
 # Watch installation
-COMPONNENT=""
+COMPONENT=""
 while [ `kubectl -n default get installation/kyma-installation -o jsonpath={.status.state}` != "Installed" ] ; \
 do \
-    NEWCOMPONNENT=`kubectl -n default get installation/kyma-installation -o jsonpath="Status: {.status.state}, Description: {.status.description}"`
-    if [ "${NEWCOMPONNENT}" != "${COMPONNENT}" ]
+    NEWCOMPONENT=`kubectl -n default get installation/kyma-installation -o jsonpath="Status: {.status.state}, Description: {.status.description}"`
+    if [ "${NEWCOMPONENT}" != "${COMPONENT}" ]
     then
-        echo  `date +"%T"` ${NEWCOMPONNENT};
+        echo  `date +"%T"` ${NEWCOMPONENT};
         sleep 2;
-        COMPONNENT=${NEWCOMPONNENT}
+        COMPONENT=${NEWCOMPONENT}
     fi
 done
 
