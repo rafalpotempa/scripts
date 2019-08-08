@@ -28,14 +28,19 @@ echo "Deploying Kyma...\n"
 
 kubectl apply -f https://github.com/kyma-project/kyma/releases/download/$KYMA_VERSION/kyma-installer-cluster.yaml
 
-sleep 1;
+sleep 40;
 
 # Watch installation
-while [ `kubectl -n default get installation/kyma-installation -o jsonpath={.status.state}` '!=' "Installed" ] ; \
+COMPONNENT=""
+while [ `kubectl -n default get installation/kyma-installation -o jsonpath={.status.state}` != "Installed" ] ; \
 do \
-        echo -ne `date +"%T"` `kubectl -n default get installation/kyma-installation -o \
-                jsonpath="Status: {.status.state}, Description: {.status.description}"` \\r; \
-        sleep 2; \
+    NEWCOMPONNENT=`kubectl -n default get installation/kyma-installation -o jsonpath="Status: {.status.state}, Description: {.status.description}"`
+    if [ "${NEWCOMPONNENT}" != "${COMPONNENT}" ]
+    then
+        echo  `date +"%T"` ${NEWCOMPONNENT};
+        sleep 2;
+        COMPONNENT=${NEWCOMPONNENT}
+    fi
 done
 
 # Get certificates
@@ -45,5 +50,14 @@ tmpfile=$(mktemp /tmp/temp-cert.XXXXXX) \
 && rm $tmpfile
 
 # Get access 
-echo $(kubectl get virtualservice core-console -n kyma-system -o jsonpath='{ .spec.hosts[0] }')
-kubectl get secret admin-user -n kyma-system -o jsonpath="{.data.password}" | base64 --decode | pbcopy
+PASS=$(kubectl get secret admin-user -n kyma-system -o jsonpath="{.data.password}" | base64 --decode)
+echo ${PASS}
+echo ${PASS} | pbcopy
+
+
+# Go to page
+URL=$(kubectl get virtualservice core-console -n kyma-system -o jsonpath='{ .spec.hosts[0] }')
+
+echo ${URL}
+
+open "https://${URL}"
