@@ -2,7 +2,7 @@
 set -o errexit
 
 ### Installation variables
-export CLUSTER_NAME=flying-seals-github-connector
+export CLUSTER_NAME=flying-seals-github-connector-tmp
 export GCP_PROJECT=sap-hybris-sf-playground
 export GCP_ZONE=europe-west1-c
 export KYMA_VERSION=1.3.0 # version only for tiller
@@ -28,13 +28,21 @@ echo "Deploying Kyma...\n"
 
 kubectl apply -f https://github.com/kyma-project/kyma/releases/download/$KYMA_VERSION/kyma-installer-cluster.yaml
 
-sleep 60;
-
 # Watch installation
+echo "Waiting for Kyma..."
+
+function kymaState(){
+    echo `kubectl -n default get installation/kyma-installation -o jsonpath={.status.state}`
+}
+
+function kymaInstallationState(){
+    echo `kubectl -n default get installation/kyma-installation -o jsonpath="Status: {.status.state}, Description: {.status.description}"`
+}
+
 COMPONENT=""
-while [ `kubectl -n default get installation/kyma-installation -o jsonpath={.status.state}` != "Installed" ] ; \
-do \
-    NEWCOMPONENT=`kubectl -n default get installation/kyma-installation -o jsonpath="Status: {.status.state}, Description: {.status.description}"`
+while [ "$(kymaState)" != "Installed" ] ;
+do
+    NEWCOMPONENT=$(kymaInstallationState)
     if [ "${NEWCOMPONENT}" != "${COMPONENT}" ]
     then
         echo  `date +"%T"` ${NEWCOMPONENT};
