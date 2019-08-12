@@ -5,7 +5,7 @@ set -o errexit
 export CLUSTER_NAME=flying-seals-github-connector-tmp
 export GCP_PROJECT=sap-hybris-sf-playground
 export GCP_ZONE=europe-west1-c
-export KYMA_VERSION=1.3.0 # version only for tiller
+export KYMA_VERSION=1.4.0 # version only for tiller
 
 # Create a cluster
 gcloud container --project "$GCP_PROJECT" clusters \
