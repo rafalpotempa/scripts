@@ -5,4 +5,6 @@ tmpfile=$(mktemp /tmp/temp-cert.XXXXXX) \
 && sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain $tmpfile \
 && rm $tmpfile
 
+sh $GOPATH/src/github.com/kyma-project/kyma/installation/scripts/tiller-tls.sh
+
 echo "Certificates provided."
