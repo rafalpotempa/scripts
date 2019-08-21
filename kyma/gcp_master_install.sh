@@ -11,11 +11,8 @@ export GCP_PROJECT=sap-hybris-sf-playground
 export GCP_ZONE=europe-west1-c
 
 # Docker login
-if [ "$(jq '.auths' ~/.docker/config.json)" = "{}" ]
-then
-    echo Docker pass:
-    docker login -u $DOCKER_ACCOUNT
-fi
+echo Docker pass for $DOCKER_ACCOUNT:
+docker login -u $DOCKER_ACCOUNT
 
 # Create a cluster
 gcloud container --project "$GCP_PROJECT" clusters \
