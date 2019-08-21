@@ -2,7 +2,7 @@
 set -e
 
 export DOCKER_ACCOUNT=pprecel
-export PROJECT_NAME=test-installer
+export PROJECT_NAME=kyma-installer
 export KYMAPATH=${GOPATH}src/github.com/kyma-project/kyma
 
 ### Installation variables
